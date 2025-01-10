@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск участка</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <button onclick="location.href='index.html'">Главная</button>
+            <button onclick="location.href='login.html'">Личный кабинет</button>
+        </nav>
+    </header>
+    <div class="form">
+        <input type="number" id="area" placeholder="Площадь">
+        <select id="permittedUse">
+            <option value="">--Разрешенное использование--</option>
+            <option value="Строительство">Строительство</option>
+            <option value="Садоводство">Садоводство</option>
+        </select>
+        <select id="ownerType">
+            <option value="">--Тип собственника--</option>
+            <option value="Москва">г.Москва</option>
+            <option value="Неразграниченная">Неразграниченная собственность</option>
+        </select>
+        <select id="leaseStatus">
+            <option value="">--Статус аренды--</option>
+            <option value="true">В аренде</option>
+            <option value="false">Не в аренде</option>
+        </select>
+        <button onclick="searchPlots()">Найти</button>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>

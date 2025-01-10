@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <button onclick="location.href='index.html'">Главная</button>
+            <button onclick="location.href='login.html'">Личный кабинет</button>
+        </nav>
+    </header>
+    <div class="login">
+        <h2>Вход в личный кабинет</h2>
+        <input type="text" id="username" placeholder="Логин">
+        <input type="password" id="password" placeholder="Пароль">
+        <button onclick="login()">Войти</button>
+        <p>Нет учетной записи? <button onclick="location.href='register.html'">Зарегистрируйтесь!</button></p>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
