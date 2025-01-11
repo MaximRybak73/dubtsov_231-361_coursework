@@ -10,7 +10,6 @@ if (!$id) {
     exit();
 }
 
-// Формируем SQL-запрос
 $sql = "SELECT * FROM grounds WHERE ID = ?";
 $stmt = $mysql->prepare($sql);
 $stmt->bind_param('i', $id);

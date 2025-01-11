@@ -10,8 +10,19 @@ if (!$data) {
     exit();
 }
 
-$username = $data['username'];
-$password = $data['password'];
+$username = trim($data['username']); // убрать лишние пробелы
+$password = trim($data['password']); 
+
+// Проверка на пустые значения
+if (empty($username) || empty($password)) {
+    echo json_encode(["error" => "Логин и пароль не могут быть пустыми!"]);
+    exit();
+}
+
+if (strlen($username) < 4 || strlen($password) < 4) {
+    echo json_encode(["error" => "Логин и пароль должны содержать не менее 4 символов!"]);
+    exit();
+}
 
 // Проверка, существует ли пользователь
 $sql = "SELECT * FROM users WHERE username = '$username'";
