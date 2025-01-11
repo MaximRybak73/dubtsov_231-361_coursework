@@ -59,7 +59,7 @@ async function register() {
     const data = await response.json();
     if (data.message) {
         alert(data.message);
-        location.href = '/public/login.html';
+        location.href = 'login.html';
     } else {
         alert(data.error);
     }
@@ -70,18 +70,22 @@ async function login() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    const response = await fetch('/api/login.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-    });
+    try {
+        const response = await fetch('/api/login.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
 
-    const data = await response.json();
-    if (data.message) {
-        alert(data.message);
-        location.href = '/public/index.html';
-    } else {
-        alert(data.error);
+        const data = await response.json();
+        if (data.message) {
+            alert(data.message);
+            location.href = 'index.html'; 
+        } else {
+            alert(data.error);
+        }
+    } catch (error) {
+        console.error('Ошибка:', error);
     }
 }
 
