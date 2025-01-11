@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Детали участка</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=d2a265eb-22cd-4069-9cdb-70453bbb679f&lang=ru_RU" type="text/javascript"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=d2a265eb-22cd-4069-9cdb-70453bbb679f&lang=ru_RU"
+        type="text/javascript"></script>
 </head>
+
 <body>
     <header>
         <nav>
@@ -15,11 +18,13 @@
             <button onclick="location.href='login.html'">Личный кабинет</button>
         </nav>
     </header>
-    <div id="plotDetails">
-        <!-- Детали участка будут загружены сюда -->
+    <div class="info">
+        <div id="plotDetails">
+            <!-- Детали участка будут загружены сюда -->
+        </div>
     </div>
     <button id="viewOnMapButton" onclick="viewOnMap()">Посмотреть на карте</button>
-    <div id="mapContainer" style="display: none; height: 400px; width: 100%; margin-top: 20px;">
+    <div id="mapContainer" style="display: none; height: 400px; width: 75%; margin-top: 20px;   margin: 20px auto;">
         <!-- Карта будет отображаться здесь -->
     </div>
     <button id="compareButton" onclick="showComparisonTable()">Сравнить с другим участком</button>
@@ -48,4 +53,5 @@
         displayPlotDetails();
     </script>
 </body>
+
 </html>

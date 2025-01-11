@@ -68,8 +68,7 @@ async function displayPlotDetails() {
     <p>Местоположение: <span data-address="${plot.Location}">${plot.Location}</span></p>
     <p>Тип собственника: ${plot.OwnerType}</p>
     <p>Статус аренды: ${plot.RentalStatus}</p>
-    <p>Разрешенное использование: ${plot.PermittedUse}</p>
-`;
+    <p>Разрешенное использование: ${plot.PermittedUse}</p>`;
     } catch (error) {
         console.error("Ошибка при загрузке данных об участке:", error);
     }
@@ -77,13 +76,13 @@ async function displayPlotDetails() {
 
 // Функция для регистрации пользователя
 async function register() {
-    const username = document.getElementById('username').value.trim(); 
+    const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
 
     // Проверка на пустые значения
     if (!username || !password) {
         alert("Логин и пароль не могут быть пустыми!");
-        return; 
+        return;
     }
 
     if (username.length < 4 || password.length < 4) {
@@ -273,7 +272,7 @@ async function displayComparison() {
 }
 
 function viewOnMap() {
-    console.log("Функция viewOnMap вызвана"); 
+    console.log("Функция viewOnMap вызвана");
 
     const plotDetails = document.getElementById('plotDetails');
     const addressElement = plotDetails.querySelector('span[data-address]'); //поиск span с data-address
@@ -294,7 +293,7 @@ function viewOnMap() {
 
     // Инициализация карты после геокодирования
     ymaps.ready(() => {
-        console.log("Яндекс.Карты загружены"); 
+        console.log("Яндекс.Карты загружены");
 
         // Геокодирование адреса
         ymaps.geocode(address, { results: 1 }).then((res) => {
@@ -319,11 +318,11 @@ function viewOnMap() {
 
                 map.geoObjects.add(marker);
             } else {
-                console.error("Адрес не найден на карте"); 
+                console.error("Адрес не найден на карте");
                 alert("Не удалось найти адрес на карте.");
             }
         }).catch((error) => {
-            console.error("Ошибка при геокодировании:", error); 
+            console.error("Ошибка при геокодировании:", error);
             alert("Ошибка при поиске адреса на карте. Проверьте консоль для подробностей.");
         });
     });
