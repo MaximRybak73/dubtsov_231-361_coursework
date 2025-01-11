@@ -33,14 +33,13 @@ function displayResults() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${plot.FieldArea}</td>
-            <td>${plot.Location}</td>
             <td>${plot.PermittedUse}</td>
+            <td>${plot.RentalStatus}</td>
             <td><button onclick="viewPlot(${plot.ID})">Подробнее</button></td>
         `;
         tableBody.appendChild(row);
     });
 }
-
 function viewPlot(id) {
     // Сохраняем ID выбранного участка в localStorage
     localStorage.setItem('selectedPlotId', id);

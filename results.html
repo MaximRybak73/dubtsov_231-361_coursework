@@ -1,28 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
     <title>Результаты поиска</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table, th, td {
-            border: 1px solid #000;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    
 </head>
+
 <body>
     <header>
         <nav>
@@ -30,14 +16,16 @@
             <button onclick="location.href='login.html'">Личный кабинет</button>
         </nav>
     </header>
-    <h1>Результаты поиска участков</h1>
+    <div class="header">
+        <h1>Результаты поиска участков</h1>
+    </div>
     <table id="compareTable">
         <thead>
             <tr>
-                <th>Площадь</th>
-                <th>Местоположение</th>
+                <th>Площадь (кв.м.)</th>
                 <th>Разрешенное использование</th>
-                <th>Действия</th>
+                <th>Статус нахождения в аренде</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -51,4 +39,5 @@
         displayResults();
     </script>
 </body>
+
 </html>

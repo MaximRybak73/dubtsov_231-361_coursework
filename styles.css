@@ -2,6 +2,11 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-image: url('/Coursework/images/index.jpg'); /* Укажите путь к вашему изображению */
+    background-size: cover; /* Растягиваем изображение на весь экран */
+    background-position: center; /* Центрируем изображение */
+    background-repeat: no-repeat; /* Запрещаем повторение изображения */
+    background-attachment: fixed; /* Фиксируем изображение, чтобы оно не прокручивалось */
 }
 
 header {
@@ -9,20 +14,61 @@ header {
     color: white;
     padding: 10px;
     text-align: right;
+    position: relative; /* Позиционируем шапку */
+    z-index: 1; /* Шапка поверх фонового изображения */
 }
 
+
 header button {
-    background-color: #555;
-    color: white;
-    border: none;
-    padding: 10px;
-    margin-left: 10px;
-    cursor: pointer;
+    background-color: #555; /* Цвет фона */
+    color: white; /* Цвет текста */
+    border: none; /* Убираем границу */
+    padding: 10px 20px; /* Внутренние отступы */
+    margin-left: 10px; /* Внешний отступ слева */
+    cursor: pointer; /* Курсор в виде указателя */
+    border-radius: 25px; /* Закругленные углы */
+    font-size: 16px; /* Размер шрифта */
+    font-weight: 500; /* Жирность шрифта */
+    transition: all 0.3s ease; /* Плавные переходы для всех свойств */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень для кнопки */
+}
+
+/* Стиль при наведении на кнопку */
+header button:hover {
+    background-color: #777; /* Цвет фона при наведении */
+    transform: translateY(-2px); /* Слегка поднимаем кнопку */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+}
+
+/* Стиль при нажатии на кнопку */
+header button:active {
+    background-color: #444; /* Цвет фона при нажатии */
+    transform: translateY(0); /* Возвращаем кнопку в исходное положение */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Возвращаем тень в исходное состояние */
+}
+
+.header {
+    text-align: center;
+    margin-top: 15px;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    animation: fadeIn 1s ease-in-out; /* Анимация появления */
+    color: aliceblue;
 }
 
 .content {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 225px;
+    font-size: 1.5rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    animation: fadeIn 2s ease-in-out; /* Анимация появления */
+    color: aliceblue;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 .form {
@@ -38,22 +84,35 @@ header button {
 }
 
 table {
-    width: 80%;
-    margin: 20px auto;
+    width: 85%;
     border-collapse: collapse;
+    margin: 20px auto; /* Центрирование таблицы */
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень для таблицы */
+    border-radius: 25px; /* Скругленные углы */
+    overflow: hidden; /* Скрываем углы, чтобы они не выходили за границы */
 }
 
-table th, table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+table th,
+table td {
+    padding: 12px 15px;
     text-align: left;
+    border-bottom: 1px solid #e0e0e0; /* Тонкая граница между строками */
 }
 
 table th {
-    background-color: #f2f2f2;
+    background-color: #895500; /* Цвет для заголовков */
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase; /* Заглавные буквы для заголовков */
+    letter-spacing: 0.5px; /* Увеличиваем расстояние между буквами */
 }
 
+table td {
+    background-color: white; /* Белый фон для ячеек */
+}
 .login, .register {
+    color: aliceblue;
     width: 300px;
     margin: 50px auto;
     text-align: center;
