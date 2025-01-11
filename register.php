@@ -1,9 +1,17 @@
 <?php
 header('Content-Type: application/json');
-include('db.php');
+include('db.php'); // Подключение к базе данных
 
-$username = $_POST['username'];
-$password = $_POST['password'];
+// Получаем данные из тела запроса
+$data = json_decode(file_get_contents('php://input'), true);
+
+if (!$data) {
+    echo json_encode(["error" => "Неверный формат данных"]);
+    exit();
+}
+
+$username = $data['username'];
+$password = $data['password'];
 
 // Проверка, существует ли пользователь
 $sql = "SELECT * FROM users WHERE username = '$username'";
@@ -17,7 +25,7 @@ if (mysqli_num_rows($result) > 0) {
     if (mysqli_query($mysql, $sql)) {
         echo json_encode(["message" => "Вы успешно зарегистрированы!"]);
     } else {
-        echo json_encode(["error" => "Registration failed"]);
+        echo json_encode(["error" => "Ошибка при регистрации: " . mysqli_error($mysql)]);
     }
 }
 

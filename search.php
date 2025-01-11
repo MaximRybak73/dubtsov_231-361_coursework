@@ -10,20 +10,44 @@ $rentalStatus = $_GET['rental_status'];
 
 // Формируем SQL-запрос
 $sql = "SELECT * FROM grounds WHERE 1=1";
-if ($area) $sql .= " AND FieldArea >= $area";
-if ($permittedUse) $sql .= " AND PermittedUse = '$permittedUse'";
-if ($ownerType) $sql .= " AND OwnerType = '$ownerType'";
-if ($rentalStatus) $sql .= " AND RentalStatus = '$rentalStatus'";
+$params = [];
 
-// Выполняем запрос
-$result = mysqli_query($mysql, $sql);
-
-$plots = [];
-while ($row = mysqli_fetch_assoc($result)) {
-    $plots[] = $row;
+if ($area) {
+    $sql .= " AND FieldArea >= ?";
+    $params[] = $area;
+}
+if ($permittedUse) {
+    $sql .= " AND PermittedUse = ?";
+    $params[] = $permittedUse;
+}
+if ($ownerType) {
+    $sql .= " AND OwnerType = ?";
+    $params[] = $ownerType;
+}
+if ($rentalStatus) {
+    $sql .= " AND RentalStatus = ?";
+    $params[] = $rentalStatus;
 }
 
-echo json_encode($plots);
+// Подготавливаем и выполняем запрос
+$stmt = $mysql->prepare($sql);
+if ($stmt) {
+    if (!empty($params)) {
+        $types = str_repeat('s', count($params)); // Все параметры передаются как строки
+        $stmt->bind_param($types, ...$params);
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $plots = [];
+    while ($row = $result->fetch_assoc()) {
+        $plots[] = $row;
+    }
+
+    echo json_encode($plots);
+} else {
+    echo json_encode(["error" => "Ошибка при подготовке запроса"]);
+}
 
 mysqli_close($mysql);
 ?>
