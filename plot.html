@@ -3,20 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Участок</title>
+    <title>Детали участка</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <button onclick="location.href='index.html'">Главная</button>
-            <button onclick="location.href='login.html'">Личный кабинет</button>
-        </nav>
-    </header>
     <div id="plotDetails">
-        <!-- Информация об участке -->
+        <!-- Детали участка будут загружены сюда -->
     </div>
-    <button onclick="location.href='compare.html'">Сравнить с другим участком</button>
+    <button id="compareButton" onclick="showComparisonTable()">Сравнить с другим участком</button>
+    <div id="comparisonTableContainer" style="display: none;">
+        <h2>Выберите участок для сравнения</h2>
+        <table id="compareTable">
+            <thead>
+                <tr>
+                    <th>Выбрать</th>
+                    <th>Площадь</th>
+                    <th>Местоположение</th>
+                    <th>Разрешенное использование</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Строки таблицы будут добавлены с помощью JavaScript -->
+            </tbody>
+        </table>
+        <button onclick="comparePlots()">Сравнить</button>
+    </div>
+
     <script src="scripts.js"></script>
+    <script>
+        // Вызов функции для отображения деталей участка при загрузке страницы
+        displayPlotDetails();
+    </script>
 </body>
 </html>
