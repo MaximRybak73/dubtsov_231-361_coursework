@@ -2,16 +2,26 @@
 header('Content-Type: application/json');
 include('db.php');
 
+// Получаем ID участка из запроса
 $id = $_GET['id'];
 
-$sql = "SELECT * FROM grounds WHERE ID = $id";
-$result = mysqli_query($mysql, $sql);
+if (!$id) {
+    echo json_encode(["error" => "ID участка не указан"]);
+    exit();
+}
 
-if ($result && mysqli_num_rows($result) > 0) {
-    $plot = mysqli_fetch_assoc($result);
+// Формируем SQL-запрос
+$sql = "SELECT * FROM grounds WHERE ID = ?";
+$stmt = $mysql->prepare($sql);
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $plot = $result->fetch_assoc();
     echo json_encode($plot);
 } else {
-    echo json_encode(["error" => "Подходящий участок не найден"]);
+    echo json_encode(["error" => "Участок не найден"]);
 }
 
 mysqli_close($mysql);
