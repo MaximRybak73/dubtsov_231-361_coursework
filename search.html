@@ -17,18 +17,19 @@
         <input type="number" id="area" placeholder="Площадь">
         <select id="permittedUse">
             <option value="">--Разрешенное использование--</option>
-            <option value="Строительство">Строительство</option>
-            <option value="Садоводство">Садоводство</option>
+            <option value="для промышленно-производственной застройки">Строительство</option>
+            <option value="для огородничества">Огородничество</option>
+            <option value="для садоводства">Садоводство</option>
         </select>
         <select id="ownerType">
             <option value="">--Тип собственника--</option>
-            <option value="Москва">г.Москва</option>
-            <option value="Неразграниченная">Неразграниченная собственность</option>
+            <option value="город Москва">г.Москва</option>
+            <option value="неразграниченная собственность">Неразграниченная собственность</option>
         </select>
-        <select id="leaseStatus">
+        <select id="rentalStatus">
             <option value="">--Статус аренды--</option>
-            <option value="true">В аренде</option>
-            <option value="false">Не в аренде</option>
+            <option value="Да">В аренде</option>
+            <option value="Нет">Не в аренде</option>
         </select>
         <button onclick="searchPlots()">Найти</button>
     </div>

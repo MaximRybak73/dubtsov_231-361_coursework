@@ -5,17 +5,29 @@ async function searchPlots() {
     const ownerType = document.getElementById('ownerType').value;
     const rentalStatus = document.getElementById('rentalStatus').value;
 
-    const response = await fetch(`api/search.php?area=${area}&permitted_use=${permittedUse}&owner_type=${ownerType}&rental_status=${rentalStatus}`);
+    const response = await fetch(`/Coursework/api/search.php?area=${area}&permitted_use=${permittedUse}&owner_type=${ownerType}&rental_status=${rentalStatus}`);
     const plots = await response.json();
 
+    // Сохраняем данные в localStorage
     localStorage.setItem('plots', JSON.stringify(plots));
+    console.log("Данные сохранены в localStorage:", plots);
+
+    // Перенаправляем на results.html
     location.href = 'results.html';
 }
 
 // Функция для отображения результатов поиска
 function displayResults() {
     const plots = JSON.parse(localStorage.getItem('plots'));
+    console.log("Данные из localStorage:", plots); // Логирование данных
+
+    if (!plots || !Array.isArray(plots)) {
+        console.error("Данные об участках отсутствуют или имеют неверный формат.");
+        return;
+    }
+
     const tableBody = document.querySelector('#compareTable tbody');
+    tableBody.innerHTML = ""; // Очистка таблицы перед заполнением
 
     plots.forEach(plot => {
         const row = document.createElement('tr');
@@ -32,7 +44,7 @@ function displayResults() {
 // Функция для просмотра деталей участка
 async function displayPlotDetails() {
     const id = localStorage.getItem('selectedPlotId');
-    const response = await fetch(`api/plot.php?id=${id}`);
+    const response = await fetch(`/Coursework/api/plot.php?id=${id}`);
     const plot = await response.json();
 
     const plotDetails = document.getElementById('plotDetails');
@@ -50,18 +62,23 @@ async function register() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    const response = await fetch('/api/register.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-    });
+    try {
+        const response = await fetch('/Coursework/api/register.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
 
-    const data = await response.json();
-    if (data.message) {
-        alert(data.message);
-        location.href = 'login.html';
-    } else {
-        alert(data.error);
+        const data = await response.json();
+        if (data.message) {
+            alert(data.message);
+            location.href = 'login.html';
+        } else {
+            alert(data.error);
+        }
+    } catch (error) {
+        console.error('Ошибка:', error);
+        alert('Произошла ошибка при регистрации. Проверьте консоль для подробностей.');
     }
 }
 
@@ -71,7 +88,7 @@ async function login() {
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch('/api/login.php', {
+        const response = await fetch('/Coursework/api/login.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
@@ -80,12 +97,13 @@ async function login() {
         const data = await response.json();
         if (data.message) {
             alert(data.message);
-            location.href = 'index.html'; 
+            location.href = 'index.html';
         } else {
             alert(data.error);
         }
     } catch (error) {
         console.error('Ошибка:', error);
+        alert('Произошла ошибка при входе. Проверьте консоль для подробностей.');
     }
 }
 
