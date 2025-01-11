@@ -20,6 +20,10 @@
         <input type="password" id="password" placeholder="Пароль">
         <button onclick="login()">Войти</button>
         <p>Нет учетной записи? <button onclick="location.href='register.html'">Зарегистрируйтесь!</button></p>
+        <button id="logoutButton" style="display: none;" onclick="logout()">Выйти из учетной записи</button>
     </div>
+    <script>
+        checkAuthForExit();
+    </script>
 </body>
 </html>

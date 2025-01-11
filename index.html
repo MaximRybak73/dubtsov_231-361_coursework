@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная страница</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js"></script>
 </head>
 <body>
     <header>
@@ -15,7 +16,16 @@
     </header>
     <div class="content">
         <h1>Найдите идеальный земельный участок</h1>
-        <button onclick="location.href='search.html'">Начните поиск участка прямо сейчас</button>
+        <div id="searchButtonContainer">
+            <!-- Кнопка или сообщение будет добавлено с помощью JavaScript -->
+        </div>
     </div>
+
+    <script>
+        
+
+        // Вызов функции проверки авторизации при загрузке страницы
+        checkAuth();
+    </script>
 </body>
 </html>

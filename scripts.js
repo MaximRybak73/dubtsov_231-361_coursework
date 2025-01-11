@@ -19,7 +19,7 @@ async function searchPlots() {
 // Функция для отображения результатов поиска
 function displayResults() {
     const plots = JSON.parse(localStorage.getItem('plots'));
-    console.log("Данные из localStorage:", plots); 
+    console.log("Данные из localStorage:", plots);
 
     if (!plots || !Array.isArray(plots)) {
         console.error("Данные об участках отсутствуют или имеют неверный формат.");
@@ -52,29 +52,25 @@ function viewPlot(id) {
 
 // Функция для просмотра деталей участка
 async function displayPlotDetails() {
-    // Получаем ID участка из localStorage
     const id = localStorage.getItem('selectedPlotId');
-    console.log("ID участка из localStorage:", id); 
     if (!id) {
         console.error("ID участка не найден в localStorage.");
         return;
     }
 
     try {
-        // Отправляем запрос на сервер для получения данных об участке
         const response = await fetch(`/Coursework/api/plot.php?id=${id}`);
         const plot = await response.json();
-        console.log("Данные об участке с сервера:", plot); 
 
-        // Отображаем информацию об участке
         const plotDetails = document.getElementById('plotDetails');
         plotDetails.innerHTML = `
-            <h2>Кадастровый номер: ${plot.CadastralNumber}</h2>
-            <p>Площадь: ${plot.FieldArea}</p>
-            <p>Тип собственника: ${plot.OwnerType}</p>
-            <p>Статус аренды: ${plot.RentalStatus}</p>
-            <p>Разрешенное использование: ${plot.PermittedUse}</p>
-        `;
+    <h2>Кадастровый номер: ${plot.CadastralNumber}</h2>
+    <p>Площадь: ${plot.FieldArea}</p>
+    <p>Местоположение: <span data-address="${plot.Location}">${plot.Location}</span></p>
+    <p>Тип собственника: ${plot.OwnerType}</p>
+    <p>Статус аренды: ${plot.RentalStatus}</p>
+    <p>Разрешенное использование: ${plot.PermittedUse}</p>
+`;
     } catch (error) {
         console.error("Ошибка при загрузке данных об участке:", error);
     }
@@ -82,8 +78,19 @@ async function displayPlotDetails() {
 
 // Функция для регистрации пользователя
 async function register() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value.trim(); 
+    const password = document.getElementById('password').value.trim();
+
+    // Проверка на пустые значения
+    if (!username || !password) {
+        alert("Логин и пароль не могут быть пустыми!");
+        return; 
+    }
+
+    if (username.length < 4 || password.length < 4) {
+        alert("Логин и пароль должны содержать не менее 4 символов!");
+        return;
+    }
 
     try {
         const response = await fetch('/Coursework/api/register.php', {
@@ -104,7 +111,6 @@ async function register() {
         alert('Произошла ошибка при регистрации. Проверьте консоль для подробностей.');
     }
 }
-
 // Функция для входа в систему
 async function login() {
     const username = document.getElementById('username').value;
@@ -120,13 +126,45 @@ async function login() {
         const data = await response.json();
         if (data.message) {
             alert(data.message);
-            location.href = 'index.html';
+            localStorage.setItem('isLoggedIn', 'true'); // Сохраняем информацию о том, что пользователь авторизован
+            location.href = 'index.html'; // Перенаправляем на главную страницу
         } else {
             alert(data.error);
         }
     } catch (error) {
         console.error('Ошибка:', error);
         alert('Произошла ошибка при входе. Проверьте консоль для подробностей.');
+    }
+}
+
+// Функция для выхода из системы
+function logout() {
+    localStorage.removeItem('isLoggedIn'); // Удаляем информацию о том, что пользователь авторизован
+    location.href = 'index.html';
+}
+
+function checkAuth() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const searchButtonContainer = document.getElementById('searchButtonContainer');
+    const logoutButton = document.getElementById('logoutButton');
+
+    if (isLoggedIn === 'true') {
+        searchButtonContainer.innerHTML = `<button onclick="location.href='search.html'">Начните поиск участка прямо сейчас</button>`;
+        logoutButton.style.display = 'block'; // показать кнопку выхода
+    } else {
+        searchButtonContainer.innerHTML = `<p>Авторизируйтесь, чтобы начать поиск</p>`;
+        logoutButton.style.display = 'none'; // скрыть
+    }
+}
+
+function checkAuthForExit() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn'); // проверка авторизован ли пользователь
+    const logoutButton = document.getElementById('logoutButton');
+
+    if (isLoggedIn === 'true') {
+        logoutButton.style.display = 'block'; // показать кнопку выхода
+    } else {
+        logoutButton.style.display = 'none'; // скрыть
     }
 }
 
@@ -137,15 +175,15 @@ function showComparisonTable() {
 
     // Получаем текущий ID участка
     const currentPlotId = localStorage.getItem('selectedPlotId');
-    console.log("Текущий ID участка:", currentPlotId); 
+    console.log("Текущий ID участка:", currentPlotId);
 
     // Получаем все участки из localStorage
     const plots = JSON.parse(localStorage.getItem('plots'));
-    console.log("Все участки из localStorage:", plots); 
+    console.log("Все участки из localStorage:", plots);
 
     // Фильтруем участки, исключая текущий
     const filteredPlots = plots.filter(plot => plot.ID != currentPlotId);
-    console.log("Отфильтрованные участки:", filteredPlots); 
+    console.log("Отфильтрованные участки:", filteredPlots);
 
     // Отображаем отфильтрованные участки в таблице
     const tableBody = document.querySelector('#compareTable tbody');
@@ -233,6 +271,72 @@ async function displayComparison() {
     } catch (error) {
         console.error("Ошибка при загрузке данных для сравнения:", error);
     }
+}
+
+function viewOnMap() {
+    console.log("Функция viewOnMap вызвана"); 
+
+    const plotDetails = document.getElementById('plotDetails');
+    const addressElement = plotDetails.querySelector('span[data-address]'); //поиск span с data-address
+    const rawAddress = addressElement ? addressElement.textContent : null;
+
+    if (!rawAddress) {
+        alert("Адрес участка не найден.");
+        return;
+    }
+
+    // Очищаем адрес
+    const address = cleanAddress(rawAddress);
+    console.log("Очищенный адрес участка:", address);
+
+    // Показать контейнер для карты
+    const mapContainer = document.getElementById('mapContainer');
+    mapContainer.style.display = 'block';
+
+    // Инициализация карты после геокодирования
+    ymaps.ready(() => {
+        console.log("Яндекс.Карты загружены"); 
+
+        // Геокодирование адреса
+        ymaps.geocode(address, { results: 1 }).then((res) => {
+            const firstGeoObject = res.geoObjects.get(0);
+            if (firstGeoObject) {
+                console.log("Адрес найден на карте:", firstGeoObject);
+
+                // Получаем координаты адреса
+                const coordinates = firstGeoObject.geometry.getCoordinates();
+
+                // Инициализация карты с центром на координатах участка
+                const map = new ymaps.Map(mapContainer, {
+                    center: coordinates, // Центр карты на координатах участка
+                    zoom: 10, // Увеличить масштаб для лучшего обзора
+                });
+
+                // Добавить маркер на карту
+                const marker = new ymaps.Placemark(coordinates, {
+                    hintContent: address, // Подсказка при наведении
+                    balloonContent: address, // Текст 
+                });
+
+                map.geoObjects.add(marker);
+            } else {
+                console.error("Адрес не найден на карте"); 
+                alert("Не удалось найти адрес на карте.");
+            }
+        }).catch((error) => {
+            console.error("Ошибка при геокодировании:", error); 
+            alert("Ошибка при поиске адреса на карте. Проверьте консоль для подробностей.");
+        });
+    });
+}
+
+function cleanAddress(address) {
+    // Убираем скобки, лишние пробелы и запятые
+    return address
+        .replace(/[()]/g, '') // Убрать скобки
+        .replace(/,+/g, ',') // Заменить множественные запятые на одну
+        .replace(/\s+/g, ' ') // Убрать лишние пробелы
+        .trim(); // Убрать пробелы в начале и конце
 }
 
 // Вызов функций при загрузке страниц
