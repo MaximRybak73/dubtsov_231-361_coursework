@@ -23,14 +23,20 @@
             <!-- Детали участка будут загружены сюда -->
         </div>
     </div>
-    <button id="viewOnMapButton" onclick="viewOnMap()">Посмотреть на карте</button>
-    <div id="mapContainer" style="display: none; height: 400px; width: 75%; margin-top: 20px;   margin: 20px auto;">
-        <!-- Карта будет отображаться здесь -->
+    <div class="button-container">
+        <button id="viewOnMapButton" class="mainbuttons" onclick="toggleMap()">Посмотреть на карте</button>
+        <div id="mapContainer" style="display: none; height: 400px; width: 75%; margin-top: 20px;   margin: 20px auto;">
+            <!-- Карта будет отображаться здесь -->
+        </div>
+        <button id="compareButton" class="mainbuttons" onclick="toggleComparisonTable()">Сравнить с другим
+            участком</button>
+        <button class="mainbuttons" style="display: none;" onclick="comparePlots()">Сравнить</button>
     </div>
-    <button id="compareButton" onclick="showComparisonTable()">Сравнить с другим участком</button>
-    <button onclick="comparePlots()">Сравнить</button>
+
     <div id="comparisonTableContainer" style="display: none;">
-        <h2>Выберите участок для сравнения</h2>
+        <div class="chooseground">
+            <h2>Выберите участок для сравнения</h2>
+        </div>
         <table id="compareTable">
             <thead>
                 <tr>

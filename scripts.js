@@ -35,7 +35,7 @@ function displayResults() {
             <td>${plot.FieldArea}</td>
             <td>${plot.PermittedUse}</td>
             <td>${plot.RentalStatus}</td>
-            <td><button onclick="viewPlot(${plot.ID})">Подробнее</button></td>
+            <td><button class="tablebuttons" onclick="viewPlot(${plot.ID})">Подробнее</button></td>
         `;
         tableBody.appendChild(row);
     });
@@ -147,7 +147,7 @@ function checkAuth() {
     const logoutButton = document.getElementById('logoutButton');
 
     if (isLoggedIn === 'true') {
-        searchButtonContainer.innerHTML = `<button onclick="location.href='search.html'">Начните поиск участка прямо сейчас</button>`;
+        searchButtonContainer.innerHTML = `<button class="mainbuttons" onclick="location.href='search.html'">Начните поиск участка сейчас</button>`;
         logoutButton.style.display = 'block'; // показать кнопку выхода
     } else {
         searchButtonContainer.innerHTML = `<p>Авторизируйтесь, чтобы начать поиск</p>`;
@@ -166,26 +166,18 @@ function checkAuthForExit() {
     }
 }
 
-// Функция для отображения таблицы с результатами поиска
+
+let tableInitialized = false; // Флаг для отслеживания инициализации таблицы
+
 function showComparisonTable() {
-    const container = document.getElementById('comparisonTableContainer');
-    container.style.display = 'block';
+    if (tableInitialized) return; // Если таблица уже инициализирована, выходим
 
-    // Получаем текущий ID участка
     const currentPlotId = localStorage.getItem('selectedPlotId');
-    console.log("Текущий ID участка:", currentPlotId);
-
-    // Получаем все участки из localStorage
     const plots = JSON.parse(localStorage.getItem('plots'));
-    console.log("Все участки из localStorage:", plots);
-
-    // Фильтруем участки, исключая текущий
     const filteredPlots = plots.filter(plot => plot.ID != currentPlotId);
-    console.log("Отфильтрованные участки:", filteredPlots);
 
-    // Отображаем отфильтрованные участки в таблице
     const tableBody = document.querySelector('#compareTable tbody');
-    tableBody.innerHTML = ""; // Очистка таблицы перед заполнением
+    tableBody.innerHTML = "";
 
     if (filteredPlots.length === 0) {
         tableBody.innerHTML = `<tr><td colspan="4">Нет доступных участков для сравнения</td></tr>`;
@@ -202,6 +194,22 @@ function showComparisonTable() {
         `;
         tableBody.appendChild(row);
     });
+
+    tableInitialized = true; // Устанавливаем флаг, что таблица инициализирована
+}
+
+let isComparisonTableVisible = false; // Флаг для отслеживания состояния таблицы
+
+function toggleComparisonTable() {
+    const comparisonTableContainer = document.getElementById('comparisonTableContainer');
+    isComparisonTableVisible = !isComparisonTableVisible; // Меняем состояние на противоположное
+
+    if (isComparisonTableVisible) {
+        comparisonTableContainer.style.display = 'block'; // Показываем таблицу
+        showComparisonTable(); // Загружаем данные в таблицу
+    } else {
+        comparisonTableContainer.style.display = 'none'; // Скрываем таблицу
+    }
 }
 
 // Функция для сравнения выбранного участка с текущим
@@ -271,11 +279,15 @@ async function displayComparison() {
     }
 }
 
+let mapInitialized = false; // Флаг для отслеживания инициализации карты
+
 function viewOnMap() {
+    if (mapInitialized) return; // Если карта уже инициализирована, выходим
+
     console.log("Функция viewOnMap вызвана");
 
     const plotDetails = document.getElementById('plotDetails');
-    const addressElement = plotDetails.querySelector('span[data-address]'); //поиск span с data-address
+    const addressElement = plotDetails.querySelector('span[data-address]');
     const rawAddress = addressElement ? addressElement.textContent : null;
 
     if (!rawAddress) {
@@ -283,40 +295,30 @@ function viewOnMap() {
         return;
     }
 
-    // Очищаем адрес
     const address = cleanAddress(rawAddress);
     console.log("Очищенный адрес участка:", address);
 
-    // Показать контейнер для карты
-    const mapContainer = document.getElementById('mapContainer');
-    mapContainer.style.display = 'block';
-
-    // Инициализация карты после геокодирования
     ymaps.ready(() => {
         console.log("Яндекс.Карты загружены");
 
-        // Геокодирование адреса
         ymaps.geocode(address, { results: 1 }).then((res) => {
             const firstGeoObject = res.geoObjects.get(0);
             if (firstGeoObject) {
                 console.log("Адрес найден на карте:", firstGeoObject);
 
-                // Получаем координаты адреса
                 const coordinates = firstGeoObject.geometry.getCoordinates();
-
-                // Инициализация карты с центром на координатах участка
-                const map = new ymaps.Map(mapContainer, {
-                    center: coordinates, // Центр карты на координатах участка
-                    zoom: 10, // Увеличить масштаб для лучшего обзора
+                const map = new ymaps.Map('mapContainer', {
+                    center: coordinates,
+                    zoom: 10,
                 });
 
-                // Добавить маркер на карту
                 const marker = new ymaps.Placemark(coordinates, {
-                    hintContent: address, // Подсказка при наведении
-                    balloonContent: address, // Текст 
+                    hintContent: address,
+                    balloonContent: address,
                 });
 
                 map.geoObjects.add(marker);
+                mapInitialized = true; // Устанавливаем флаг, что карта инициализирована
             } else {
                 console.error("Адрес не найден на карте");
                 alert("Не удалось найти адрес на карте.");
@@ -326,6 +328,20 @@ function viewOnMap() {
             alert("Ошибка при поиске адреса на карте. Проверьте консоль для подробностей.");
         });
     });
+}
+
+let isMapVisible = false; // Флаг для отслеживания состояния карты
+
+function toggleMap() {
+    const mapContainer = document.getElementById('mapContainer');
+    isMapVisible = !isMapVisible; // Меняем состояние на противоположное
+
+    if (isMapVisible) {
+        mapContainer.style.display = 'block'; // Показываем карту
+        viewOnMap(); // Инициализируем карту
+    } else {
+        mapContainer.style.display = 'none'; // Скрываем карту
+    }
 }
 
 function cleanAddress(address) {

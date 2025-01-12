@@ -18,9 +18,9 @@
         <h2>Вход в личный кабинет</h2>
         <input type="text" id="username" placeholder="Логин">
         <input type="password" id="password" placeholder="Пароль">
-        <button onclick="login()">Войти</button>
-        <p>Нет учетной записи? <button onclick="location.href='register.html'">Зарегистрируйтесь!</button></p>
-        <button id="logoutButton" style="display: none;" onclick="logout()">Выйти из учетной записи</button>
+        <button class="mainbuttons" onclick="login()">Войти</button>
+        <p>Нет учетной записи? <a href="register.html">Зарегистрируйтесь!</a></p>
+        <button class="exitbutton" id="logoutButton" style="display: none; margin: 0 auto" onclick="logout()">Выйти из учетной записи</button>
     </div>
     <script>
         checkAuthForExit();
