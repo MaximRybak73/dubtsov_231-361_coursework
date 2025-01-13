@@ -13,8 +13,9 @@ $sql = "SELECT * FROM grounds WHERE 1=1";
 $params = [];
 
 if ($area) {
-    $sql .= " AND FieldArea >= ?";
-    $params[] = $area;
+    $sql .= " AND FieldArea >= ? AND FieldArea <= ?";
+    $params[] = $area;       // Нижняя граница
+    $params[] = $area + 100; // Верхняя граница
 }
 if ($permittedUse) {
     $sql .= " AND PermittedUse = ?";

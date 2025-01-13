@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: application/json');
+session_start(); // Запуск сессии
 include('db.php'); // Подключение к базе данных
 
 // Получаем данные из тела запроса
@@ -18,6 +19,7 @@ $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$passwo
 $result = mysqli_query($mysql, $sql);
 
 if (mysqli_num_rows($result) > 0) {
+    $_SESSION['username'] = $username; // Сохраняем имя пользователя в сессии
     echo json_encode(["message" => "Вы успешно вошли в систему!"]);
 } else {
     echo json_encode(["error" => "Неправильный логин или пароль!"]);
