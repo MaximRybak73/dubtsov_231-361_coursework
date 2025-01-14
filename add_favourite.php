@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
-session_start(); 
-include('db.php'); 
+session_start();
+include('db.php');
 
 // Чтение данных из тела запроса
 $data = json_decode(file_get_contents('php://input'), true);
@@ -20,35 +20,21 @@ if (!isset($_SESSION['username'])) {
 
 $username = $_SESSION['username'];
 
-// Проверяем, не добавлен ли участок уже в избранное
-$sql = "SELECT * FROM favorites WHERE username = ? AND plot_id = ?";
-$stmt = $mysql->prepare($sql);
-if (!$stmt) {
-    echo json_encode(["error" => "Ошибка подготовки запроса: " . $mysql->error]);
-    exit();
-}
-$stmt->bind_param('si', $username, $plot_id);
-$stmt->execute();
-$result = $stmt->get_result();
+try {
+    // Вызываем хранимую процедуру
+    $stmt = $mysql->prepare("CALL AddToFavorites(?, ?)");
+    if (!$stmt) {
+        throw new Exception("Ошибка подготовки запроса: " . $mysql->error);
+    }
+    $stmt->bind_param('si', $username, $plot_id);
 
-if ($result->num_rows > 0) {
-    echo json_encode(["error" => "Участок уже в избранном"]);
-    exit();
-}
-
-// Добавляем участок в избранное
-$sql = "INSERT INTO favorites (username, plot_id) VALUES (?, ?)";
-$stmt = $mysql->prepare($sql);
-if (!$stmt) {
-    echo json_encode(["error" => "Ошибка подготовки запроса: " . $mysql->error]);
-    exit();
-}
-$stmt->bind_param('si', $username, $plot_id);
-
-if ($stmt->execute()) {
-    echo json_encode(["message" => "Участок добавлен в избранное"]);
-} else {
-    echo json_encode(["error" => "Ошибка при добавлении в избранное: " . $stmt->error]);
+    if ($stmt->execute()) {
+        echo json_encode(["message" => "Участок добавлен в избранное"]);
+    } else {
+        throw new Exception("Ошибка при добавлении в избранное: " . $stmt->error);
+    }
+} catch (Exception $e) {
+    echo json_encode(["error" => $e->getMessage()]);
 }
 
 mysqli_close($mysql);

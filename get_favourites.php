@@ -11,21 +11,25 @@ if (!isset($_SESSION['username'])) {
 
 $username = $_SESSION['username'];
 
-// Получаем избранные участки пользователя
-$sql = "SELECT g.* FROM grounds g
-        JOIN favorites f ON g.ID = f.plot_id
-        WHERE f.username = ?";
-$stmt = $mysql->prepare($sql);
-$stmt->bind_param('s', $username);
-$stmt->execute();
-$result = $stmt->get_result();
+try {
+    // Вызов хранимой процедуры
+    $stmt = $mysql->prepare("CALL GetFavorites(?)");
+    if (!$stmt) {
+        throw new Exception("Ошибка подготовки запроса: " . $mysql->error);
+    }
+    $stmt->bind_param('s', $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-$favorites = [];
-while ($row = $result->fetch_assoc()) {
-    $favorites[] = $row;
+    $favorites = [];
+    while ($row = $result->fetch_assoc()) {
+        $favorites[] = $row;
+    }
+
+    echo json_encode($favorites);
+} catch (Exception $e) {
+    echo json_encode(["error" => $e->getMessage()]);
 }
-
-echo json_encode($favorites);
 
 mysqli_close($mysql);
 ?>

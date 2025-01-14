@@ -1,17 +1,17 @@
 <?php
 header('Content-Type: application/json');
-include('db.php'); // Подключение к базе данных
+include('db.php');
 
-// Получаем данные из тела запроса
+// Получение данных из тела запроса
 $data = json_decode(file_get_contents('php://input'), true);
 
-if (!$data) {
+if (!$data || !isset($data['username']) || !isset($data['password'])) {
     echo json_encode(["error" => "Неверный формат данных"]);
     exit();
 }
 
-$username = trim($data['username']); // убрать лишние пробелы
-$password = trim($data['password']); 
+$username = trim($data['username']);
+$password = trim($data['password']);
 
 // Проверка на пустые значения
 if (empty($username) || empty($password)) {
@@ -24,20 +24,21 @@ if (strlen($username) < 4 || strlen($password) < 4) {
     exit();
 }
 
-// Проверка, существует ли пользователь
-$sql = "SELECT * FROM users WHERE username = '$username'";
-$result = mysqli_query($mysql, $sql);
-
-if (mysqli_num_rows($result) > 0) {
-    echo json_encode(["error" => "Пользователь с таким логином уже существует!"]);
-} else {
-    // Сохраняем нового пользователя
-    $sql = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
-    if (mysqli_query($mysql, $sql)) {
-        echo json_encode(["message" => "Вы успешно зарегистрированы!"]);
-    } else {
-        echo json_encode(["error" => "Ошибка при регистрации: " . mysqli_error($mysql)]);
+try {
+    $stmt = $mysql->prepare("CALL RegisterUser(?, ?, @result)");
+    if (!$stmt) {
+        throw new Exception("Ошибка подготовки запроса: " . $mysql->error);
     }
+    $stmt->bind_param('ss', $username, $password);
+    $stmt->execute();
+
+    $result = $mysql->query("SELECT @result AS result");
+    $row = $result->fetch_assoc();
+    $message = $row['result'];
+
+    echo json_encode(["message" => $message]);
+} catch (Exception $e) {
+    echo json_encode(["error" => $e->getMessage()]);
 }
 
 mysqli_close($mysql);

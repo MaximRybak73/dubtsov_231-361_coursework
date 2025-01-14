@@ -1,12 +1,12 @@
 <?php
 header('Content-Type: application/json');
-session_start(); // Запуск сессии
-include('db.php'); // Подключение к базе данных
+session_start();
+include('db.php'); 
 
-// Получаем данные из тела запроса
+// Получение данных из тела запроса
 $data = json_decode(file_get_contents('php://input'), true);
 
-if (!$data) {
+if (!$data || !isset($data['username']) || !isset($data['password'])) {
     echo json_encode(["error" => "Неверный формат данных"]);
     exit();
 }
@@ -14,15 +14,28 @@ if (!$data) {
 $username = $data['username'];
 $password = $data['password'];
 
-// Проверка, существует ли пользователь
-$sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-$result = mysqli_query($mysql, $sql);
+try {
+    // Вызов хранимой процедуры
+    $stmt = $mysql->prepare("CALL CheckUserLogin(?, ?, @result)");
+    if (!$stmt) {
+        throw new Exception("Ошибка подготовки запроса: " . $mysql->error);
+    }
+    $stmt->bind_param('ss', $username, $password);
+    $stmt->execute();
 
-if (mysqli_num_rows($result) > 0) {
-    $_SESSION['username'] = $username; // Сохраняем имя пользователя в сессии
-    echo json_encode(["message" => "Вы успешно вошли в систему!"]);
-} else {
-    echo json_encode(["error" => "Неправильный логин или пароль!"]);
+    // Получение результата из result
+    $result = $mysql->query("SELECT @result AS result");
+    $row = $result->fetch_assoc();
+    $userExists = (int)$row['result'];
+
+    if ($userExists > 0) {
+        $_SESSION['username'] = $username; // Сохранить имя пользователя в сессии
+        echo json_encode(["message" => "Вы успешно вошли в систему!"]);
+    } else {
+        echo json_encode(["error" => "Неправильный логин или пароль!"]);
+    }
+} catch (Exception $e) {
+    echo json_encode(["error" => $e->getMessage()]);
 }
 
 mysqli_close($mysql);

@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 session_start(); 
-include('db.php'); 
+include('db.php');
 
 // Чтение данных из тела запроса
 $data = json_decode(file_get_contents('php://input'), true);
@@ -20,19 +20,20 @@ if (!isset($_SESSION['username'])) {
 
 $username = $_SESSION['username'];
 
-// Удаляем участок из избранного
-$sql = "DELETE FROM favorites WHERE username = ? AND plot_id = ?";
-$stmt = $mysql->prepare($sql);
-if (!$stmt) {
-    echo json_encode(["error" => "Ошибка подготовки запроса: " . $mysql->error]);
-    exit();
-}
-$stmt->bind_param('si', $username, $plot_id);
+try {
+    $stmt = $mysql->prepare("CALL RemoveFromFavorites(?, ?)");
+    if (!$stmt) {
+        throw new Exception("Ошибка подготовки запроса: " . $mysql->error);
+    }
+    $stmt->bind_param('si', $username, $plot_id);
 
-if ($stmt->execute()) {
-    echo json_encode(["message" => "Участок удален из избранного"]);
-} else {
-    echo json_encode(["error" => "Ошибка при удалении из избранного: " . $stmt->error]);
+    if ($stmt->execute()) {
+        echo json_encode(["message" => "Участок удален из избранного"]);
+    } else {
+        throw new Exception("Ошибка при удалении из избранного: " . $stmt->error);
+    }
+} catch (Exception $e) {
+    echo json_encode(["error" => $e->getMessage()]);
 }
 
 mysqli_close($mysql);
