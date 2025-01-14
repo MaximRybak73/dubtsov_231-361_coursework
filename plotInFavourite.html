@@ -13,7 +13,7 @@
 <body>
     <header>
         <nav>
-            <button style="float: left;" onclick="location.href='results.html'">Назад</button>
+            <button style="float: left;" onclick="location.href='favourites.html'">Назад</button>
             <button onclick="location.href='index.html'">Главная</button>
             <button onclick="location.href='login.html'">Личный кабинет</button>
         </nav>
@@ -22,38 +22,12 @@
         <div id="plotDetails">
             <!-- Детали участка -->
         </div>
-        <button id="addToFavoritesButton" class="mainbuttons" onclick="addToFavorites()">В избранное</button>
     </div>
     <div class="button-container">
         <button id="viewOnMapButton" class="mainbuttons" onclick="toggleMap()">Посмотреть на карте</button>
         <div id="mapContainer" style="display: none; height: 400px; width: 75%; margin-top: 20px;   margin: 20px auto;">
             <!-- Карта -->
         </div>
-        <button id="compareButton" class="mainbuttons" onclick="toggleComparisonTable()">Сравнить с другим
-            участком</button>
-        <button class="mainbuttons" onclick="comparePlots()">Сравнить</button>
-    </div>
-
-    <div id="comparisonTableContainer" style="display: none;">
-        <div class="chooseground">
-            <h2>Выберите участок для сравнения</h2>
-        </div>
-        <table id="compareTable">
-            <thead>
-                <tr>
-                    <th>Выбрать</th>
-                    <th>Площадь</th>
-                    <th>Местоположение</th>
-                    <th>Разрешенное использование</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Строки таблицы с помощью JavaScript -->
-            </tbody>
-        </table>
-
-    </div>
-
     <script src="scripts.js"></script>
     <script>
         // Вызов функции для отображения деталей участка при загрузке страницы

@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Результаты поиска</title>
+    <title>Избранное</title>
     <link rel="stylesheet" href="styles.css">
-    
 </head>
-
 <body>
     <header>
         <nav>
@@ -17,9 +14,9 @@
         </nav>
     </header>
     <div class="header">
-        <h1>Результаты поиска участков</h1>
+        <h1>Избранные участки</h1>
     </div>
-    <table id="compareTable">
+    <table id="favoritesTable">
         <thead>
             <tr>
                 <th>Площадь (кв.м.)</th>
@@ -32,12 +29,11 @@
             <!-- Строки таблицы с помощью JavaScript -->
         </tbody>
     </table>
-    
+
     <script src="scripts.js"></script>
     <script>
-        // Вызов функции для отображения результатов при загрузке страницы
-        displayResults();
+        // Вызов функции для отображения избранных участков при загрузке страницы
+        displayFavorites();
     </script>
 </body>
-
 </html>

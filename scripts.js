@@ -1,34 +1,55 @@
 // Функция для поиска участков
 async function searchPlots() {
-    const area = document.getElementById('area').value;
-    const permittedUse = document.getElementById('permittedUse').value;
-    const ownerType = document.getElementById('ownerType').value;
-    const rentalStatus = document.getElementById('rentalStatus').value;
+    const areaMin = document.getElementById('areaMin').value || null;
+    const areaMax = document.getElementById('areaMax').value || null;
+    const permittedUse = document.getElementById('permittedUse').value || null;
+    const ownerType = document.getElementById('ownerType').value || null;
+    const rentalStatus = document.getElementById('rentalStatus').value || null;
 
-    const response = await fetch(`/Coursework/api/search.php?area=${area}&permitted_use=${permittedUse}&owner_type=${ownerType}&rental_status=${rentalStatus}`);
-    const plots = await response.json();
+    // Формируем URL с параметрами
+    const params = new URLSearchParams();
+    if (areaMin !== null) params.append('areaMin', areaMin);
+    if (areaMax !== null) params.append('areaMax', areaMax);
+    if (permittedUse !== null) params.append('permitted_use', permittedUse);
+    if (ownerType !== null) params.append('owner_type', ownerType);
+    if (rentalStatus !== null) params.append('rental_status', rentalStatus);
 
-    // Сохраняем данные в localStorage
-    localStorage.setItem('plots', JSON.stringify(plots));
-    console.log("Данные сохранены в localStorage:", plots);
+    try {
+        const response = await fetch(`search.php?${params.toString()}`);
+        if (!response.ok) {
+            throw new Error(`Ошибка сервера: ${response.status} ${response.statusText}`);
+        }
+        const plots = await response.json();
+        console.log("Данные получены:", plots);
 
-    // Перенаправляем на results.html
-    location.href = 'results.html';
+        // Сохраняем данные в localStorage
+        localStorage.setItem('plots', JSON.stringify(plots));
+
+        // Перенаправляем на results.html
+        location.href = 'results.html';
+    } catch (error) {
+        console.error("Ошибка при выполнении запроса:", error);
+    }
 }
-
 // Функция для отображения результатов поиска
 function displayResults() {
     const plots = JSON.parse(localStorage.getItem('plots'));
     console.log("Данные из localStorage:", plots);
 
-    if (!plots || !Array.isArray(plots)) {
-        console.error("Данные об участках отсутствуют или имеют неверный формат.");
-        return;
-    }
-
     const tableBody = document.querySelector('#compareTable tbody');
     tableBody.innerHTML = ""; // Очистка таблицы перед заполнением
 
+    if (!plots || !Array.isArray(plots) || plots.length === 0) {
+        // Если данные отсутствуют или массив пуст, выводим сообщение
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td colspan="4" style="text-align: center;">Не найдены подходящие участки</td>
+        `;
+        tableBody.appendChild(row);
+        return;
+    }
+
+    // Если участки найдены, отображаем их в таблице
     plots.forEach(plot => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -40,6 +61,7 @@ function displayResults() {
         tableBody.appendChild(row);
     });
 }
+
 function viewPlot(id) {
     // Сохраняем ID выбранного участка в localStorage
     localStorage.setItem('selectedPlotId', id);
@@ -49,6 +71,14 @@ function viewPlot(id) {
     location.href = 'plot.html';
 }
 
+function viewPlotFav(id) {
+    // Сохраняем ID выбранного участка в localStorage
+    localStorage.setItem('selectedPlotId', id);
+    console.log("Выбран участок с ID:", id);
+
+    // Перенаправляем на страницу plot.html
+    location.href = 'plotInFavourite.html';
+}
 // Функция для просмотра деталей участка
 async function displayPlotDetails() {
     const id = localStorage.getItem('selectedPlotId');
@@ -58,17 +88,17 @@ async function displayPlotDetails() {
     }
 
     try {
-        const response = await fetch(`/Coursework/api/plot.php?id=${id}`);
+        const response = await fetch(`plot.php?id=${id}`);
         const plot = await response.json();
 
         const plotDetails = document.getElementById('plotDetails');
         plotDetails.innerHTML = `
-    <h2>Кадастровый номер: ${plot.CadastralNumber}</h2>
-    <p>Площадь: ${plot.FieldArea}</p>
-    <p>Местоположение: <span data-address="${plot.Location}">${plot.Location}</span></p>
-    <p>Тип собственника: ${plot.OwnerType}</p>
-    <p>Статус аренды: ${plot.RentalStatus}</p>
-    <p>Разрешенное использование: ${plot.PermittedUse}</p>`;
+        <h2>Кадастровый номер: ${plot.CadastralNumber}</h2>
+        <p>Площадь: ${plot.FieldArea}</p>
+        <p>Местоположение: <span data-address="${plot.Location}">${plot.Location}</span></p>
+        <p>Тип собственника: ${plot.OwnerType}</p>
+        <p>Статус аренды: ${plot.RentalStatus}</p>
+        <p>Разрешенное использование: ${plot.PermittedUse}</p>`;
     } catch (error) {
         console.error("Ошибка при загрузке данных об участке:", error);
     }
@@ -91,7 +121,7 @@ async function register() {
     }
 
     try {
-        const response = await fetch('/Coursework/api/register.php', {
+        const response = await fetch('register.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
@@ -115,7 +145,7 @@ async function login() {
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch('/Coursework/api/login.php', {
+        const response = await fetch('login.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
@@ -125,6 +155,7 @@ async function login() {
         if (data.message) {
             alert(data.message);
             localStorage.setItem('isLoggedIn', 'true'); // Сохраняем информацию о том, что пользователь авторизован
+            localStorage.setItem('username', username); // Сохраняем имя пользователя
             location.href = 'index.html'; // Перенаправляем на главную страницу
         } else {
             alert(data.error);
@@ -138,16 +169,21 @@ async function login() {
 // Функция для выхода из системы
 function logout() {
     localStorage.removeItem('isLoggedIn'); // Удаляем информацию о том, что пользователь авторизован
+    localStorage.removeItem('username'); // Удаляем имя пользователя
     location.href = 'index.html';
 }
+
 
 function checkAuth() {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     const searchButtonContainer = document.getElementById('searchButtonContainer');
+    const FavButtonContainer = document.getElementById('favButtonContainer');
     const logoutButton = document.getElementById('logoutButton');
 
     if (isLoggedIn === 'true') {
         searchButtonContainer.innerHTML = `<button class="mainbuttons" onclick="location.href='search.html'">Начните поиск участка сейчас</button>`;
+        FavButtonContainer.innerHTML = `<button class="mainbuttons"
+         style="margin-top:10px" onclick="location.href='favourites.html'">Избранные участки</button>`
         logoutButton.style.display = 'block'; // показать кнопку выхода
     } else {
         searchButtonContainer.innerHTML = `<p>Авторизируйтесь, чтобы начать поиск</p>`;
@@ -240,10 +276,10 @@ async function displayComparison() {
     const [plot1Id, plot2Id] = plotIds;
 
     try {
-        const response1 = await fetch(`/Coursework/api/plot.php?id=${plot1Id}`);
+        const response1 = await fetch(`plot.php?id=${plot1Id}`);
         const plot1 = await response1.json();
 
-        const response2 = await fetch(`/Coursework/api/plot.php?id=${plot2Id}`);
+        const response2 = await fetch(`plot.php?id=${plot2Id}`);
         const plot2 = await response2.json();
 
         const tableBody = document.querySelector('#compareTable tbody');
@@ -353,6 +389,101 @@ function cleanAddress(address) {
         .trim(); // Убрать пробелы в начале и конце
 }
 
+async function addToFavorites() {
+    const plotId = localStorage.getItem('selectedPlotId');
+
+    if (!plotId) {
+        alert("ID участка не найден.");
+        return;
+    }
+
+    try {
+        const response = await fetch('add_favourite.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }, // Указываем, что отправляем JSON
+            body: JSON.stringify({ plot_id: plotId }) // Отправляем данные в формате JSON
+        });
+
+        const text = await response.text();
+        console.log("Ответ сервера:", text);
+
+        const data = JSON.parse(text); // Пытаемся распарсить ответ как JSON
+        if (data.message) {
+            alert(data.message);
+        } else {
+            alert(data.error);
+        }
+    } catch (error) {
+        console.error('Ошибка:', error);
+        alert('Произошла ошибка при добавлении в избранное.');
+    }
+}
+
+async function displayFavorites() {
+    try {
+        const response = await fetch('get_favourites.php');
+        const favorites = await response.json();
+
+        const tableBody = document.querySelector('#favoritesTable tbody');
+        tableBody.innerHTML = ""; // Очистка таблицы перед заполнением
+
+        if (favorites.length === 0) {
+            // Если избранных участков нет, добавляем сообщение
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td colspan="4" style="text-align: center;">Вы не добавили еще ни одного участка</td>
+            `;
+            tableBody.appendChild(row);
+        } else {
+            // Если есть избранные участки, отображаем их
+            favorites.forEach(plot => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${plot.FieldArea}</td>
+                    <td>${plot.PermittedUse}</td>
+                    <td>${plot.RentalStatus}</td>
+                    <td>
+                        <button class="tablebuttons" onclick="viewPlotFav(${plot.ID})">Подробнее</button>
+                        <button class="tablebuttons" style="margin-top: 5px" onclick="removeFromFavorites(${plot.ID})">Удалить</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+    } catch (error) {
+        console.error("Ошибка при загрузке избранных участков:", error);
+    }
+}
+
+async function removeFromFavorites(plotId) {
+    if (!plotId) {
+        alert("ID участка не найден.");
+        return;
+    }
+
+    try {
+        const response = await fetch('remove_favourite.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }, // Указываем, что отправляем JSON
+            body: JSON.stringify({ plot_id: plotId }) // Отправляем данные в формате JSON
+        });
+
+        const text = await response.text();
+        console.log("Ответ сервера:", text);
+
+        const data = JSON.parse(text); // Пытаемся распарсить ответ как JSON
+        if (data.message) {
+            alert(data.message);
+            displayFavorites(); // Обновляем таблицу после удаления
+        } else {
+            alert(data.error);
+        }
+    } catch (error) {
+        console.error('Ошибка:', error);
+        alert('Произошла ошибка при удалении из избранного.');
+    }
+}
+
 // Вызов функций при загрузке страниц
 if (window.location.pathname.endsWith('results.html')) {
     displayResults();
@@ -361,3 +492,9 @@ if (window.location.pathname.endsWith('results.html')) {
 if (window.location.pathname.endsWith('plot.html')) {
     displayPlotDetails();
 }
+
+if (window.location.pathname.endsWith('index.html')) {
+    checkAuth();
+    checkAuthForExit();
+}
+

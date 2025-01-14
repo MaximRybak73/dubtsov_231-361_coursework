@@ -2,8 +2,8 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;;
     margin: 0;
     padding: 0;
-    background-image: url('/Coursework/images/index.jpg'); /* Укажите путь к вашему изображению */
-    background-size: cover; /* Растягиваем изображение на весь экран */
+    background-image: url('photo.jpg');
+    background-size: cover; /* изображение на весь экран */
     background-position: center; /* Центрируем изображение */
     background-repeat: no-repeat; /* Запрещаем повторение изображения */
     background-attachment: fixed; /* Фиксируем изображение, чтобы оно не прокручивалось */
@@ -14,21 +14,21 @@ header {
     color: white;
     padding: 10px;
     text-align: right;
-    position: relative; /* Позиционируем шапку */
+    position: relative; 
     z-index: 1; /* Шапка поверх фонового изображения */
 }
 
 
 header button, .exitbutton {
-    background-color: #555; /* Цвет фона */
+    background-color: #555; 
     color: white; /* Цвет текста */
     border: none; /* Убираем границу */
     padding: 10px 20px; /* Внутренние отступы */
-    margin-left: 10px; /* Внешний отступ слева */
+    margin-left: 10px; 
     cursor: pointer; /* Курсор в виде указателя */
-    border-radius: 25px; /* Закругленные углы */
+    border-radius: 25px;
     font-size: 16px; /* Размер шрифта */
-    font-weight: 500; /* Жирность шрифта */
+    font-weight: 500; /* Жирность */
     transition: all 0.3s ease; /* Плавные переходы для всех свойств */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень для кнопки */
 }
@@ -209,7 +209,7 @@ table td {
 }
 
 a {
-    color: #5a3096; /* Основной цвет текста */
+    color: #fbfbfb; /* Основной цвет текста */
     margin: 5px;
     text-decoration: none; /* Убираем подчеркивание */
     font-size: 16px; /* Размер шрифта */
@@ -223,7 +223,7 @@ a {
 
 /* Стиль при наведении */
 a:hover {
-    color: white; /* Цвет текста при наведении */
+    color: rgb(0, 0, 0); /* Цвет текста при наведении */
     background-color: #ffffff; /* Цвет фона при наведении */
     transform: translateY(-1px); /* Слегка поднимаем ссылку */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень при наведении */
@@ -238,5 +238,25 @@ a:active {
 
 /* Стиль для посещенных ссылок */
 a:visited {
-    color: #3700b3; /* Цвет для посещенных ссылок */
+    color: #ffffff; /* Цвет для посещенных ссылок */
+}
+
+.data-source {
+    text-align: center; /* Центрирование текста */
+    margin-top: 40px; /* Отступ сверху */
+    padding: 10px; /* Внутренний отступ */
+    background-color: #333; /* Легкий фон */
+    border-top: 1px solid #ddd; /* Граница сверху */
+    font-size: 14px; /* Размер текста */
+    color: #555; /* Цвет текста */
+}
+
+.data-source a {
+    text-decoration: none; /* Убираем подчеркивание */
+    color: #007BFF; /* Цвет ссылки */
+    font-weight: bold; /* Жирный шрифт */
+}
+
+.data-source a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
 }
