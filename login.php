@@ -3,6 +3,7 @@ header('Content-Type: application/json');
 session_start();
 include('db.php'); 
 
+//прочитать данные из http запроса и преобразовать в ассоциативный массив, json_decode - препобразовать исходную строку в php
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (!$data || !isset($data['username']) || !isset($data['password'])) {

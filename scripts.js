@@ -22,7 +22,6 @@ async function searchPlots() {
         const plots = await response.json();
         console.log("Данные получены:", plots);
 
-        // Сохрантиь данные в localStorage
         localStorage.setItem('plots', JSON.stringify(plots));
         location.href = 'results.html';
     } catch (error) {
@@ -61,7 +60,6 @@ function displayResults() {
 }
 
 function viewPlot(id) {
-    // Сохранить ID выбранного участка в localStorage
     localStorage.setItem('selectedPlotId', id);
     console.log("Выбран участок с ID:", id);
 
@@ -158,6 +156,22 @@ async function login() {
     } catch (error) {
         console.error('Ошибка:', error);
         alert('Произошла ошибка при входе. Проверьте консоль для подробностей.');
+    }
+}
+
+function disableLoginFormIfLoggedIn() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn'); 
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const loginButton = document.getElementById('loginButton');
+
+    if (isLoggedIn === 'true') {
+        usernameInput.disabled = true;
+        passwordInput.disabled = true;
+        loginButton.disabled = true;
+
+        loginButton.style.backgroundColor = "#ccc"; 
+        loginButton.style.cursor = "not-allowed"; 
     }
 }
 
@@ -331,7 +345,7 @@ function viewOnMap() {
         console.log("Яндекс.Карты загружены");
 
         ymaps.geocode(address, { results: 1 }).then((res) => {
-            const firstGeoObject = res.geoObjects.get(0);
+            const firstGeoObject = res.geoObjects.get(0); //вернуть первый рез-ат поиска адреса
             if (firstGeoObject) {
                 console.log("Адрес найден на карте:", firstGeoObject);
 
@@ -341,8 +355,8 @@ function viewOnMap() {
                     zoom: 10,
                 });
 
-                const marker = new ymaps.Placemark(coordinates, {
-                    hintContent: address,
+                const marker = new ymaps.Placemark(coordinates, { //маркер
+                    hintContent: address, //подсказка у маркера
                     balloonContent: address,
                 });
 
@@ -414,7 +428,7 @@ async function addToFavorites() {
 async function displayFavorites() {
     try {
         const response = await fetch('get_favourites.php');
-        const favorites = await response.json();
+        const favorites = await response.json(); //преобразование ответа в javscript    
 
         const tableBody = document.querySelector('#favoritesTable tbody');
         tableBody.innerHTML = ""; // Очистка таблицы перед заполнением
@@ -425,13 +439,14 @@ async function displayFavorites() {
             row.innerHTML = `
                 <td colspan="4" style="text-align: center;">Вы не добавили еще ни одного участка</td>
             `;
-            tableBody.appendChild(row);
+            tableBody.appendChild(row);// добавить стрку в таблицу с сообщением
         } else {
             // Если есть избранные участки
-            favorites.forEach(plot => {
+            favorites.forEach(plot => { //перебрать каждый элемент массива favorites
                 const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${plot.FieldArea}</td>
+                //установка содержимого строки таблицы
+                row.innerHTML =  `
+                    <td>${plot.FieldArea}</td> 
                     <td>${plot.PermittedUse}</td>
                     <td>${plot.RentalStatus}</td>
                     <td>
