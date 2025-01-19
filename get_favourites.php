@@ -12,7 +12,6 @@ if (!isset($_SESSION['username'])) {
 $username = $_SESSION['username'];
 
 try {
-    // Вызов хранимой процедуры
     $stmt = $mysql->prepare("CALL GetFavorites(?)");
     if (!$stmt) {
         throw new Exception("Ошибка подготовки запроса: " . $mysql->error);

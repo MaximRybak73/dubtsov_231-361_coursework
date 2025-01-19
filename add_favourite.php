@@ -21,7 +21,6 @@ if (!isset($_SESSION['username'])) {
 $username = $_SESSION['username'];
 
 try {
-    // Вызываем хранимую процедуру
     $stmt = $mysql->prepare("CALL AddToFavorites(?, ?)");
     if (!$stmt) {
         throw new Exception("Ошибка подготовки запроса: " . $mysql->error);

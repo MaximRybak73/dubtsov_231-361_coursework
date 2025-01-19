@@ -13,7 +13,6 @@ if (!$data || !isset($data['username']) || !isset($data['password'])) {
 $username = trim($data['username']);
 $password = trim($data['password']);
 
-// Проверка на пустые значения
 if (empty($username) || empty($password)) {
     echo json_encode(["error" => "Логин и пароль не могут быть пустыми!"]);
     exit();

@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 include('db.php');
 
-// Получаем параметры запроса
+// получение параметров запроса
 $areaMin = $_GET['areaMin'] ?? null;
 $areaMax = $_GET['areaMax'] ?? null;
 $permittedUse = $_GET['permitted_use'] ?? null;

@@ -6,7 +6,7 @@ async function searchPlots() {
     const ownerType = document.getElementById('ownerType').value || null;
     const rentalStatus = document.getElementById('rentalStatus').value || null;
 
-    // Формируем URL с параметрами
+    // Формирование URL с параметрами
     const params = new URLSearchParams();
     if (areaMin !== null) params.append('areaMin', areaMin);
     if (areaMax !== null) params.append('areaMax', areaMax);
@@ -22,10 +22,8 @@ async function searchPlots() {
         const plots = await response.json();
         console.log("Данные получены:", plots);
 
-        // Сохраняем данные в localStorage
+        // Сохрантиь данные в localStorage
         localStorage.setItem('plots', JSON.stringify(plots));
-
-        // Перенаправляем на results.html
         location.href = 'results.html';
     } catch (error) {
         console.error("Ошибка при выполнении запроса:", error);
@@ -40,7 +38,7 @@ function displayResults() {
     tableBody.innerHTML = ""; // Очистка таблицы перед заполнением
 
     if (!plots || !Array.isArray(plots) || plots.length === 0) {
-        // Если данные отсутствуют или массив пуст, выводим сообщение
+        // Если данные отсутствуют или массив пуст
         const row = document.createElement('tr');
         row.innerHTML = `
             <td colspan="4" style="text-align: center;">Не найдены подходящие участки</td>
@@ -49,7 +47,7 @@ function displayResults() {
         return;
     }
 
-    // Если участки найдены, отображаем их в таблице
+    // Если участки найдены
     plots.forEach(plot => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -63,20 +61,18 @@ function displayResults() {
 }
 
 function viewPlot(id) {
-    // Сохраняем ID выбранного участка в localStorage
+    // Сохранить ID выбранного участка в localStorage
     localStorage.setItem('selectedPlotId', id);
     console.log("Выбран участок с ID:", id);
 
-    // Перенаправляем на страницу plot.html
     location.href = 'plot.html';
 }
 
 function viewPlotFav(id) {
-    // Сохраняем ID выбранного участка в localStorage
+    // Сохранить ID выбранного участка в localStorage
     localStorage.setItem('selectedPlotId', id);
     console.log("Выбран участок с ID:", id);
 
-    // Перенаправляем на страницу plot.html
     location.href = 'plotInFavourite.html';
 }
 // Функция для просмотра деталей участка
@@ -109,7 +105,6 @@ async function register() {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
 
-    // Проверка на пустые значения
     if (!username || !password) {
         alert("Логин и пароль не могут быть пустыми!");
         return;
@@ -154,9 +149,9 @@ async function login() {
         const data = await response.json();
         if (data.message) {
             alert(data.message);
-            localStorage.setItem('isLoggedIn', 'true'); // Сохраняем информацию о том, что пользователь авторизован
-            localStorage.setItem('username', username); // Сохраняем имя пользователя
-            location.href = 'index.html'; // Перенаправляем на главную страницу
+            localStorage.setItem('isLoggedIn', 'true'); // Сохранить информацию о том, что пользователь авторизован
+            localStorage.setItem('username', username); // Сохранить имя пользователя
+            location.href = 'index.html';
         } else {
             alert(data.error);
         }
@@ -168,8 +163,8 @@ async function login() {
 
 // Функция для выхода из системы
 function logout() {
-    localStorage.removeItem('isLoggedIn'); // Удаляем информацию о том, что пользователь авторизован
-    localStorage.removeItem('username'); // Удаляем имя пользователя
+    localStorage.removeItem('isLoggedIn'); 
+    localStorage.removeItem('username'); 
     location.href = 'index.html';
 }
 
@@ -206,7 +201,7 @@ function checkAuthForExit() {
 let tableInitialized = false; // Флаг для отслеживания инициализации таблицы
 
 function showComparisonTable() {
-    if (tableInitialized) return; // Если таблица уже инициализирована, выходим
+    if (tableInitialized) return; // Если таблица уже инициализирована то выйти
 
     const currentPlotId = localStorage.getItem('selectedPlotId');
     const plots = JSON.parse(localStorage.getItem('plots'));
@@ -231,20 +226,20 @@ function showComparisonTable() {
         tableBody.appendChild(row);
     });
 
-    tableInitialized = true; // Устанавливаем флаг, что таблица инициализирована
+    tableInitialized = true; // Установить флаг, что таблица инициализирована
 }
 
-let isComparisonTableVisible = false; // Флаг для отслеживания состояния таблицы
+let isComparisonTableVisible = false; // для отслеживания состояния таблицы
 
 function toggleComparisonTable() {
     const comparisonTableContainer = document.getElementById('comparisonTableContainer');
-    isComparisonTableVisible = !isComparisonTableVisible; // Меняем состояние на противоположное
+    isComparisonTableVisible = !isComparisonTableVisible; // изменить состояние на противоположное
 
     if (isComparisonTableVisible) {
-        comparisonTableContainer.style.display = 'block'; // Показываем таблицу
-        showComparisonTable(); // Загружаем данные в таблицу
+        comparisonTableContainer.style.display = 'block'; // показать таблицу
+        showComparisonTable(); // Загрузить данные в таблицу
     } else {
-        comparisonTableContainer.style.display = 'none'; // Скрываем таблицу
+        comparisonTableContainer.style.display = 'none'; // Скрыть таблицу
     }
 }
 
@@ -258,10 +253,8 @@ function comparePlots() {
         return;
     }
 
-    // Сохраняем ID участков для сравнения в localStorage
     localStorage.setItem('comparePlotIds', JSON.stringify([currentPlotId, selectedPlotId]));
 
-    // Перенаправляем на страницу сравнения
     location.href = 'compare.html';
 }
 
@@ -318,7 +311,7 @@ async function displayComparison() {
 let mapInitialized = false; // Флаг для отслеживания инициализации карты
 
 function viewOnMap() {
-    if (mapInitialized) return; // Если карта уже инициализирована, выходим
+    if (mapInitialized) return; // Если карта уже инициализирована, выйти
 
     console.log("Функция viewOnMap вызвана");
 
@@ -354,7 +347,7 @@ function viewOnMap() {
                 });
 
                 map.geoObjects.add(marker);
-                mapInitialized = true; // Устанавливаем флаг, что карта инициализирована
+                mapInitialized = true; // флаг, что карта инициализирована
             } else {
                 console.error("Адрес не найден на карте");
                 alert("Не удалось найти адрес на карте.");
@@ -370,18 +363,17 @@ let isMapVisible = false; // Флаг для отслеживания состо
 
 function toggleMap() {
     const mapContainer = document.getElementById('mapContainer');
-    isMapVisible = !isMapVisible; // Меняем состояние на противоположное
+    isMapVisible = !isMapVisible; // изменить состояние на противоположное
 
     if (isMapVisible) {
-        mapContainer.style.display = 'block'; // Показываем карту
-        viewOnMap(); // Инициализируем карту
+        mapContainer.style.display = 'block'; // показать карту
+        viewOnMap(); // инициализировать карту
     } else {
-        mapContainer.style.display = 'none'; // Скрываем карту
+        mapContainer.style.display = 'none'; // Скрыть карту
     }
 }
 
 function cleanAddress(address) {
-    // Убираем скобки, лишние пробелы и запятые
     return address
         .replace(/[()]/g, '') // Убрать скобки
         .replace(/,+/g, ',') // Заменить множественные запятые на одну
@@ -400,14 +392,14 @@ async function addToFavorites() {
     try {
         const response = await fetch('add_favourite.php', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' }, // Указываем, что отправляем JSON
-            body: JSON.stringify({ plot_id: plotId }) // Отправляем данные в формате JSON
+            headers: { 'Content-Type': 'application/json' }, // указание, что отправляем JSON
+            body: JSON.stringify({ plot_id: plotId }) // отправка данных в формате JSON
         });
 
         const text = await response.text();
         console.log("Ответ сервера:", text);
 
-        const data = JSON.parse(text); // Пытаемся распарсить ответ как JSON
+        const data = JSON.parse(text); //распарсить ответ как JSON
         if (data.message) {
             alert(data.message);
         } else {
@@ -428,14 +420,14 @@ async function displayFavorites() {
         tableBody.innerHTML = ""; // Очистка таблицы перед заполнением
 
         if (favorites.length === 0) {
-            // Если избранных участков нет, добавляем сообщение
+            // Если избранных участков нет
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td colspan="4" style="text-align: center;">Вы не добавили еще ни одного участка</td>
             `;
             tableBody.appendChild(row);
         } else {
-            // Если есть избранные участки, отображаем их
+            // Если есть избранные участки
             favorites.forEach(plot => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -464,17 +456,17 @@ async function removeFromFavorites(plotId) {
     try {
         const response = await fetch('remove_favourite.php', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' }, // Указываем, что отправляем JSON
-            body: JSON.stringify({ plot_id: plotId }) // Отправляем данные в формате JSON
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({ plot_id: plotId }) 
         });
 
         const text = await response.text();
         console.log("Ответ сервера:", text);
 
-        const data = JSON.parse(text); // Пытаемся распарсить ответ как JSON
+        const data = JSON.parse(text); 
         if (data.message) {
             alert(data.message);
-            displayFavorites(); // Обновляем таблицу после удаления
+            displayFavorites(); // обновить таблицу после удаления
         } else {
             alert(data.error);
         }
@@ -484,7 +476,7 @@ async function removeFromFavorites(plotId) {
     }
 }
 
-// Вызов функций при загрузке страниц
+//при загрузке страниц
 if (window.location.pathname.endsWith('results.html')) {
     displayResults();
 }

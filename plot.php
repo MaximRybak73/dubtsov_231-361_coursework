@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 include('db.php'); 
 
-// Получение ID участка из запроса
+// получить ID участка из запроса
 $id = $_GET['id'];
 
 if (!$id) {
@@ -11,7 +11,6 @@ if (!$id) {
 }
 
 try {
-    // Вызов хранимой процедуры
     $stmt = $mysql->prepare("CALL GetPlotById(?)");
     if (!$stmt) {
         throw new Exception("Ошибка подготовки запроса: " . $mysql->error);

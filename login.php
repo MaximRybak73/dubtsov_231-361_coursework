@@ -3,7 +3,6 @@ header('Content-Type: application/json');
 session_start();
 include('db.php'); 
 
-// Получение данных из тела запроса
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (!$data || !isset($data['username']) || !isset($data['password'])) {
@@ -15,7 +14,6 @@ $username = $data['username'];
 $password = $data['password'];
 
 try {
-    // Вызов хранимой процедуры
     $stmt = $mysql->prepare("CALL CheckUserLogin(?, ?, @result)");
     if (!$stmt) {
         throw new Exception("Ошибка подготовки запроса: " . $mysql->error);

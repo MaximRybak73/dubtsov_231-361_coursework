@@ -4,9 +4,9 @@ body {
     padding: 0;
     background-image: url('photo.jpg');
     background-size: cover; /* изображение на весь экран */
-    background-position: center; /* Центрируем изображение */
-    background-repeat: no-repeat; /* Запрещаем повторение изображения */
-    background-attachment: fixed; /* Фиксируем изображение, чтобы оно не прокручивалось */
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; /* чтобы не прокручивалось */
 }
 
 header {
@@ -21,30 +21,30 @@ header {
 
 header button, .exitbutton {
     background-color: #555; 
-    color: white; /* Цвет текста */
-    border: none; /* Убираем границу */
-    padding: 10px 20px; /* Внутренние отступы */
+    color: white; 
+    border: none; 
+    padding: 10px 20px; 
     margin-left: 10px; 
-    cursor: pointer; /* Курсор в виде указателя */
+    cursor: pointer; 
     border-radius: 25px;
-    font-size: 16px; /* Размер шрифта */
-    font-weight: 500; /* Жирность */
-    transition: all 0.3s ease; /* Плавные переходы для всех свойств */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень для кнопки */
+    font-size: 16px; 
+    font-weight: 500; 
+    transition: all 0.3s ease; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 /* Стиль при наведении на кнопку */
 header button:hover, .exitbutton:hover {
-    background-color: #777; /* Цвет фона при наведении */
-    transform: translateY(-2px); /* Слегка поднимаем кнопку */
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+    background-color: #777; 
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Стиль при нажатии на кнопку */
 header button:active, .exitbutton:active {
-    background-color: #444; /* Цвет фона при нажатии */
-    transform: translateY(0); /* Возвращаем кнопку в исходное положение */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Возвращаем тень в исходное состояние */
+    background-color: #444;
+    transform: translateY(0); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 .header {
@@ -68,13 +68,13 @@ header button:active, .exitbutton:active {
 
 .info {
     color: aliceblue;
-    background-color: rgba(0, 0, 0, 0.7); /* Полупрозрачный черный фон */
-    padding: 8px 12px; /* Отступы внутри фона */
-    border-radius: 20px; /* Скругленные углы */
-    display: block; /* Блочный элемент */
+    background-color: rgba(0, 0, 0, 0.7); 
+    padding: 8px 12px; 
+    border-radius: 20px; 
+    display: block; 
     width: fit-content; /* Ширина блока равна ширине содержимого */
-    max-width: 600px; /* Максимальная ширина блока */
-    margin: 15px auto; /* Центрирование по горизонтали */
+    max-width: 600px; 
+    margin: 15px auto;
     font-family: 'Arial', sans-serif;
 }
 
@@ -100,28 +100,28 @@ table {
     border-collapse: collapse;
     margin: 20px auto; /* Центрирование таблицы */
     font-family: Arial, sans-serif;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень для таблицы */
-    border-radius: 25px; /* Скругленные углы */
-    overflow: hidden; /* Скрываем углы, чтобы они не выходили за границы */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    border-radius: 25px; 
+    overflow: hidden; /* скрыть углы чтобы не выходили за границы */
 }
 
 table th,
 table td {
     padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid #e0e0e0; /* Тонкая граница между строками */
+    border-bottom: 1px solid #e0e0e0;
 }
 
-table th {
-    background-color: #895500; /* Цвет для заголовков */
+table th { /* для заголовков*/
+    background-color: #895500; 
     color: white;
     font-weight: bold;
-    text-transform: uppercase; /* Заглавные буквы для заголовков */
-    letter-spacing: 0.5px; /* Увеличиваем расстояние между буквами */
+    text-transform: uppercase; 
+    letter-spacing: 0.5px; 
 }
 
-table td {
-    background-color: white; /* Белый фон для ячеек */
+table td {/* для ячеек*/
+    background-color: white; 
 }
 .login, .register {
     color: aliceblue;
@@ -145,118 +145,122 @@ table td {
 }
 
 .mainbuttons {
-    background-color: rgb(59, 216, 11); /* Цвет фона */
-    color: white; /* Цвет текста */
-    border: none; /* Убираем границу */
-    padding: 10px 20px; /* Внутренние отступы */
-    margin-left: 10px; /* Внешний отступ слева */
-    cursor: pointer; /* Курсор в виде указателя */
-    border-radius: 25px; /* Закругленные углы */
-    font-size: 16px; /* Размер шрифта */
-    font-weight: 500; /* Жирность шрифта */
-    transition: all 0.3s ease; /* Плавные переходы для всех свойств */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень для кнопки */
+    background-color: rgb(59, 216, 11); 
+    color: white; 
+    border: none; 
+    padding: 10px 20px; 
+    margin-left: 10px; 
+    cursor: pointer; 
+    border-radius: 25px; 
+    font-size: 16px; 
+    font-weight: 500; 
+    transition: all 0.3s ease; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 /* Стиль при наведении на кнопку */
 .mainbuttons:hover {
-    background-color: #777; /* Цвет фона при наведении */
-    transform: translateY(-2px); /* Слегка поднимаем кнопку */
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+    background-color: #777; 
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); 
 }
 
 /* Стиль при нажатии на кнопку */
 .mainbuttons:active {
-    background-color: #444; /* Цвет фона при нажатии */
-    transform: translateY(0); /* Возвращаем кнопку в исходное положение */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Возвращаем тень в исходное состояние */
+    background-color: #444; 
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 .tablebuttons {
-    background-color: rgba(216, 127, 11, 0.937); /* Цвет фона */
-    color: white; /* Цвет текста */
-    border: none; /* Убираем границу */
-    padding: 10px 20px; /* Внутренние отступы */
-    margin-left: 10px; /* Внешний отступ слева */
-    cursor: pointer; /* Курсор в виде указателя */
-    border-radius: 15px; /* Закругленные углы */
-    font-size: 16px; /* Размер шрифта */
-    font-weight: 300; /* Жирность шрифта */
-    transition: all 0.3s ease; /* Плавные переходы для всех свойств */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень для кнопки */
+    background-color: rgba(216, 127, 11, 0.937);
+    color: white;
+    border: none;
+    padding: 10px 20px; 
+    margin-left: 10px; 
+    cursor: pointer; 
+    border-radius: 15px; 
+    font-size: 16px; 
+    font-weight: 300; 
+    transition: all 0.3s ease; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 /* Стиль при наведении на кнопку */
 .tablebuttons:hover {
-    background-color: #777; /* Цвет фона при наведении */
-    transform: translateY(-2px); /* Слегка поднимаем кнопку */
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Увеличиваем тень */
+    background-color: #777; 
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); 
 }
 
 /* Стиль при нажатии на кнопку */
 .tablebuttons:active {
-    background-color: #444; /* Цвет фона при нажатии */
-    transform: translateY(0); /* Возвращаем кнопку в исходное положение */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Возвращаем тень в исходное состояние */
+    background-color: #444; 
+    transform: translateY(0); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 .button-container {
     display: flex;
-    flex-direction: column; /* Элементы друг под другом */
-    align-items: center; /* Центрирование по горизонтали */
+    flex-direction: column; 
+    align-items: center; 
     gap: 10px; /* Расстояние между кнопками */
-    margin-top: 20px; /* Отступ сверху */
+    margin-top: 20px; 
 }
 
 a {
     color: #fbfbfb; /* Основной цвет текста */
     margin: 5px;
-    text-decoration: none; /* Убираем подчеркивание */
-    font-size: 16px; /* Размер шрифта */
-    font-weight: 500; /* Жирность шрифта */
-    padding: 8px 16px; /* Внутренние отступы */
-    border-radius: 25px; /* Закругленные углы */
-    transition: all 0.3s ease; /* Плавные переходы для всех свойств */
-    display: inline-block; /* Делаем ссылку блочной для лучшего контроля */
-    background-color: rgba(98, 0, 234, 0.1); /* Легкий фоновый цвет */
+    text-decoration: none; 
+    font-size: 16px; 
+    font-weight: 500; 
+    padding: 8px 16px; 
+    border-radius: 25px; 
+    transition: all 0.3s ease; 
+    display: inline-block; 
+    background-color: rgba(98, 0, 234, 0.1); 
 }
 
 /* Стиль при наведении */
 a:hover {
-    color: rgb(0, 0, 0); /* Цвет текста при наведении */
-    background-color: #ffffff; /* Цвет фона при наведении */
-    transform: translateY(-1px); /* Слегка поднимаем ссылку */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень при наведении */
+    color: rgb(0, 0, 0); 
+    background-color: #ffffff; 
+    transform: translateY(-1px); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 /* Стиль при нажатии */
 a:active {
-    background-color: #ffffff; /* Цвет фона при нажатии */
-    transform: translateY(0); /* Возвращаем ссылку в исходное положение */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Уменьшаем тень */
+    background-color: #ffffff; 
+    transform: translateY(0); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 /* Стиль для посещенных ссылок */
 a:visited {
-    color: #ffffff; /* Цвет для посещенных ссылок */
+    color: #ffffff;
 }
 
 .data-source {
-    text-align: center; /* Центрирование текста */
-    margin-top: 40px; /* Отступ сверху */
-    padding: 10px; /* Внутренний отступ */
-    background-color: #333; /* Легкий фон */
-    border-top: 1px solid #ddd; /* Граница сверху */
-    font-size: 14px; /* Размер текста */
-    color: #555; /* Цвет текста */
+    position: fixed; 
+    bottom: 0; /* прижать к нижней части экрана */
+    left: 0; 
+    width: 100%; 
+    text-align: center; 
+    padding: 10px; 
+    background-color: rgba(51, 51, 51, 0.9);
+    border-top: 1px solid #ddd; 
+    font-size: 14px; 
+    color: #fff; 
+    z-index: 1000; /* элемент поверх других */
 }
 
 .data-source a {
-    text-decoration: none; /* Убираем подчеркивание */
-    color: #007BFF; /* Цвет ссылки */
-    font-weight: bold; /* Жирный шрифт */
+    text-decoration: none; 
+    color: #007BFF;
+    font-weight: bold; 
 }
 
 .data-source a:hover {
-    text-decoration: underline; /* Подчеркивание при наведении */
+    text-decoration: underline; 
 }
