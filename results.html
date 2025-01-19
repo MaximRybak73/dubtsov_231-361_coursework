@@ -11,6 +11,7 @@
 
 <body>
     <header>
+        <h1>MaxGround</h1>
         <nav>
             <button onclick="location.href='index.html'">Главная</button>
             <button onclick="location.href='login.html'">Личный кабинет</button>
@@ -19,6 +20,15 @@
     <div class="header">
         <h1>Результаты поиска участков</h1>
     </div>
+
+    <div class="search-params">
+        <h2>Параметры поиска:</h2>
+        <p id="searchArea"></p>
+        <p id="searchPermittedUse"></p>
+        <p id="searchOwnerType"></p>
+        <p id="searchRentalStatus"></p>
+    </div>
+
     <table id="compareTable">
         <thead>
             <tr>

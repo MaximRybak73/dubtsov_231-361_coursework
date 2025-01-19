@@ -3,7 +3,6 @@ header('Content-Type: application/json');
 session_start(); 
 include('db.php');
 
-// Чтение данных из тела запроса
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (!$data || !isset($data['plot_id'])) {

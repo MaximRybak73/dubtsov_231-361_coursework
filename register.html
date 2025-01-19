@@ -9,6 +9,7 @@
 <body>
     <script src="scripts.js"></script>
     <header>
+        <h1>MaxGround</h1>
         <nav>
             <button onclick="location.href='index.html'">Главная</button>
             <button onclick="location.href='login.html'">Личный кабинет</button>
@@ -16,10 +17,13 @@
     </header>
     <div class="register">
         <h2>Регистрация</h2>
+        <label for="username">Придумайте логин:</label>
         <input type="text" id="username" placeholder="Логин">
+
+        <label for="password">Придумайте пароль:</label>
         <input type="password" id="password" placeholder="Пароль">
         <button class="mainbuttons" onclick=register()>Зарегистрироваться</button>
-        <p>Уже есть аккаунт? <a href="login.html">Войдите!</a></p>
+        <p>Уже есть аккаунт? Войдите, чтобы подобрать земельный участок! <a href="login.html">Войти</a></p>
     </div>
 </body>
 </html>

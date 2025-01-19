@@ -13,11 +13,23 @@ header {
     background-color: #333;
     color: white;
     padding: 10px;
-    text-align: right;
-    position: relative; 
-    z-index: 1; /* Шапка поверх фонового изображения */
+    position: relative;
+    z-index: 1;
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
 }
 
+header h1 {
+    margin: 0; /* Убираем отступы у заголовка */
+    margin-left: 5px;
+    font-size: 30px; /* Размер шрифта заголовка */
+}
+
+nav {
+    display: flex; /* Включаем Flexbox для навигации */
+    gap: 10px; /* Расстояние между кнопками */
+}
 
 header button, .exitbutton {
     background-color: #555; 
@@ -160,6 +172,7 @@ table td {/* для ячеек*/
 
 /* Стиль при наведении на кнопку */
 .mainbuttons:hover {
+    color: #333;
     background-color: #777; 
     transform: translateY(-2px); 
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); 
@@ -223,7 +236,7 @@ a {
 
 /* Стиль при наведении */
 a:hover {
-    color: rgb(0, 0, 0); 
+    color:#333;
     background-color: #ffffff; 
     transform: translateY(-1px); 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
@@ -231,6 +244,7 @@ a:hover {
 
 /* Стиль при нажатии */
 a:active {
+    color:#333;
     background-color: #ffffff; 
     transform: translateY(0); 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
@@ -263,4 +277,43 @@ a:visited {
 
 .data-source a:hover {
     text-decoration: underline; 
+}
+
+.search-params {
+    margin: 5px auto;
+    font-weight: bold;
+    padding: 6px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 440px;
+    margin-bottom: 3px;
+}
+
+.search-params h2 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.search-params p {
+    margin: 5px 0;
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.login label, .register label, .form label {
+    display: block; 
+    margin-bottom: 5px; 
+    font-weight: bold; 
+    color: rgb(255, 255, 255); 
+}
+
+.login input, .register input, .form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    font-size: 16px; 
 }

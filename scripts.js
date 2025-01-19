@@ -6,6 +6,15 @@ async function searchPlots() {
     const ownerType = document.getElementById('ownerType').value || null;
     const rentalStatus = document.getElementById('rentalStatus').value || null;
 
+    const searchParams = {
+        areaMin,
+        areaMax,
+        permittedUse,
+        ownerType,
+        rentalStatus
+    };
+    localStorage.setItem('searchParams', JSON.stringify(searchParams));
+
     // Формирование URL с параметрами
     const params = new URLSearchParams();
     if (areaMin !== null) params.append('areaMin', areaMin);
@@ -123,9 +132,13 @@ async function register() {
         const data = await response.json();
         if (data.message) {
             alert(data.message);
-            location.href = 'login.html';
-        } else {
-            alert(data.error);
+            // Перенаправляем на страницу входа только при успешной регистрации
+            if (!data.error) {
+                location.href = 'login.html';
+            }
+        } else if (data.error) {
+            alert(data.error); 
+            location.href = 'register.html';
         }
     } catch (error) {
         console.error('Ошибка:', error);
@@ -160,25 +173,29 @@ async function login() {
 }
 
 function disableLoginFormIfLoggedIn() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn'); 
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const loginButton = document.getElementById('loginButton');
+    const registerLink = document.querySelector('#registerbutton a');
 
     if (isLoggedIn === 'true') {
         usernameInput.disabled = true;
         passwordInput.disabled = true;
         loginButton.disabled = true;
 
-        loginButton.style.backgroundColor = "#ccc"; 
-        loginButton.style.cursor = "not-allowed"; 
+        registerLink.style.pointerEvents = 'none';
+    
+
+        loginButton.style.backgroundColor = "#ccc";
+        loginButton.style.cursor = "not-allowed";
     }
 }
 
 // Функция для выхода из системы
 function logout() {
-    localStorage.removeItem('isLoggedIn'); 
-    localStorage.removeItem('username'); 
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('username');
     location.href = 'index.html';
 }
 
@@ -445,7 +462,7 @@ async function displayFavorites() {
             favorites.forEach(plot => { //перебрать каждый элемент массива favorites
                 const row = document.createElement('tr');
                 //установка содержимого строки таблицы
-                row.innerHTML =  `
+                row.innerHTML = `
                     <td>${plot.FieldArea}</td> 
                     <td>${plot.PermittedUse}</td>
                     <td>${plot.RentalStatus}</td>
@@ -471,14 +488,14 @@ async function removeFromFavorites(plotId) {
     try {
         const response = await fetch('remove_favourite.php', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify({ plot_id: plotId }) 
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ plot_id: plotId })
         });
 
         const text = await response.text();
         console.log("Ответ сервера:", text);
 
-        const data = JSON.parse(text); 
+        const data = JSON.parse(text);
         if (data.message) {
             alert(data.message);
             displayFavorites(); // обновить таблицу после удаления
@@ -491,9 +508,44 @@ async function removeFromFavorites(plotId) {
     }
 }
 
+function displaySearchParams() {
+    const searchParams = JSON.parse(localStorage.getItem('searchParams'));
+    if (!searchParams) return;
+
+    const searchArea = document.getElementById('searchArea');
+    const searchPermittedUse = document.getElementById('searchPermittedUse');
+    const searchOwnerType = document.getElementById('searchOwnerType');
+    const searchRentalStatus = document.getElementById('searchRentalStatus');
+
+    if (searchParams.areaMin || searchParams.areaMax) {
+        searchArea.textContent = `Площадь: ${searchParams.areaMin ? `от ${searchParams.areaMin}` : ''} ${searchParams.areaMax ? `до ${searchParams.areaMax}` : ''}`;
+    } else {
+        searchArea.textContent = 'Площадь: не указана';
+    }
+
+    if (searchParams.permittedUse) {
+        searchPermittedUse.textContent = `Разрешенное использование: ${searchParams.permittedUse}`;
+    } else {
+        searchPermittedUse.textContent = 'Разрешенное использование: не указано';
+    }
+
+    if (searchParams.ownerType) {
+        searchOwnerType.textContent = `Тип собственника: ${searchParams.ownerType}`;
+    } else {
+        searchOwnerType.textContent = 'Тип собственника: не указан';
+    }
+
+    if (searchParams.rentalStatus) {
+        searchRentalStatus.textContent = `Статус аренды: ${searchParams.rentalStatus}`;
+    } else {
+        searchRentalStatus.textContent = 'Статус аренды: не указан';
+    }
+}
+
 //при загрузке страниц
 if (window.location.pathname.endsWith('results.html')) {
     displayResults();
+    displaySearchParams();
 }
 
 if (window.location.pathname.endsWith('plot.html')) {

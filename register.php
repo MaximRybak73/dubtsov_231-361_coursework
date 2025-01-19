@@ -35,7 +35,11 @@ try {
     $row = $result->fetch_assoc();
     $message = $row['result'];
 
-    echo json_encode(["message" => $message]);
+    if ($message === "Пользователь с таким логином уже существует") {
+        echo json_encode(["error" => $message]);
+    } else {
+        echo json_encode(["message" => $message]);
+    }
 } catch (Exception $e) {
     echo json_encode(["error" => $e->getMessage()]);
 }
